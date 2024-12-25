@@ -1,0 +1,18 @@
+services:
+   - type: web
+
+  name: backend
+  key: value
+
+    buildCommand: npm install
+    startCommand: npm start
+    env: .env
+    routes:
+      - path: "/*"
+        method: GET
+        command: "npm start"
+        services:
+          - name: mongodb
+            type: mongodb
+    automaticDeploys:
+      branch: main
