@@ -31,8 +31,9 @@ const userSchema = new mongoose.Schema({
             { type: String }, // Phone 3
             { type: String }  // Phone 4
         ],
-        textMessage: { type: String } // Text message
     },
+    textMessage: { type: String } // Text message
+,
     createdAt: {
         type: Date,
         default: Date.now
