@@ -220,7 +220,9 @@ app.post("/updatePhones", async (req, res) => {
       }
 
       // Update the user's emergency contacts
-      user.emergencyContacts = { phones, message };
+      user.emergencyContacts = { phones };
+      user.textMessage = message
+      console.log(user)
 
       await user.save();
 
@@ -263,6 +265,7 @@ app.post("/sendEmergencyEmail", async (req, res) => {
 
     // Retrieve the sender's profile
     const sender = await User.findById(decoded.userId);
+    console.log("sender data =>>>>> ",sender.emergencyContacts)
     if (!sender) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -286,7 +289,7 @@ app.post("/sendEmergencyEmail", async (req, res) => {
       // Send the email to each emergency contact (admin)
       const mailPromises = emergencyEmails.map((email) => {
         return transporter.sendMail({
-          from: "nagasaitac143@gmail.com", 
+          from: "gowtham996644@gmail.com", 
           to: email,
           subject: "Emergency Location Alert",
           html: emailContent,
@@ -303,6 +306,7 @@ app.post("/sendEmergencyEmail", async (req, res) => {
           name: sender.name,
           email: sender.email,
           phone: sender.phone,
+          textMessage:sender.message
         },
         location: {
           latitude,
@@ -312,11 +316,7 @@ app.post("/sendEmergencyEmail", async (req, res) => {
           bearing,
         },
         emergencyEmails,
-        adminProfiles: emergencyEmails.map((email) => ({
-          email,
-          name: "Admin",
-          phone: "Not Provided",
-        })),
+  
         status: "sent",
         photoUri: photoUri,  // Store the photo as Base64 string in the database
       });
@@ -334,6 +334,7 @@ app.post("/sendEmergencyEmail", async (req, res) => {
           name: sender.name,
           email: sender.email,
           phone: sender.phone,
+          textMessage:sender.message
         },
         location: {
           latitude,
@@ -343,11 +344,7 @@ app.post("/sendEmergencyEmail", async (req, res) => {
           bearing,
         },
         emergencyEmails,
-        adminProfiles: emergencyEmails.map((email) => ({
-          email,
-          name: "Admin",
-          phone: "Not Provided",
-        })),
+      
         status: "failed",
         photoUri: photoUri,  // Store the photo as Base64 string in case of failure
       });
