@@ -6,6 +6,7 @@ const emergencyAlertSchema = new mongoose.Schema({
     name: { type: String },
     email: { type: String },
     phone: { type: String },  // Add other fields like phone if needed
+    textMessage: { type: String },  // Add other fields like phone if needed
   },
   location: {
     latitude: { type: Number, required: true },
@@ -25,6 +26,7 @@ const emergencyAlertSchema = new mongoose.Schema({
   status: { type: String, enum: ['sent', 'failed'], required: true },  // Status of the email
   createdAt: { type: Date, default: Date.now },
   photoUri: { type: String },  // Add the photo field to store the photo URL
+  message:{type: String}
 
 });
 
